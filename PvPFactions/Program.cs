@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Sandbox.Common;
+using Sandbox.Common.Components;
+using Sandbox.Common.ObjectBuilders;
+using Sandbox.ModAPI;
+using Sandbox.ModAPI.Ingame;
+using Sandbox.ModAPI.Interfaces;
+using VRageMath;
 
-namespace PvPFactions
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-        }
-    }
-}
+//Basic imports
+
+namespace AutomatedAgressionResponse 
+    [MyEntityComponentDescriptor(typeof(MyObjectBuilder_CubeGrid))
