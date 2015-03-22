@@ -53,7 +53,8 @@ namespace ConsoleApplication2
 
 
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun && x.FatBlock.isWorking);
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun() && x.IsWorking);
+
 
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
             {
