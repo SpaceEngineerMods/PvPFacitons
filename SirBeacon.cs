@@ -49,11 +49,14 @@ namespace ConsoleApplication2
 
         public override void UpdateBeforeSimulation100()
         {
-
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun);
+            HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun && x.FatBlock.isWorking);
+            
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
-                if (((Block.GetTopMostParent().entityid() != SmallGatlingGun.GetTopMostParent().entityid()) && SmallGatlingGun.isWorking
-    ) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+            {
+                if (((Block.GetTopMostParent().entityid() != SmallGatlingGun.GetTopMostParent().entityid())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)}
+    
+                
 
             {
                 if (!m_greeted)
