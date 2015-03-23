@@ -5,9 +5,14 @@ using Sandbox.Common.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;
+<<<<<<< HEAD
 using Sandbox.ModAPI.Ingame;
 
 namespace WeaponsRangeCheck
+=======
+
+namespace ConsoleApplication2
+>>>>>>> c04a03317a2fcba94cf23c648edab11be5289963
 {
     [MyEntityComponentDescriptor(typeof(MyObjectBuilder_Beacon))]
     public class MyBeaconLogic : MyGameLogicComponent
@@ -54,14 +59,22 @@ namespace WeaponsRangeCheck
 
 
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
+<<<<<<< HEAD
             HashSet<IMyEntity> IMySmallGatlingGun;
             Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(IMySmallGatlingGun,
                 (x) => x is IMySmallGatlingGun && x.IsWorking);
+=======
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun() && x.IsWorking);
+>>>>>>> c04a03317a2fcba94cf23c648edab11be5289963
 
 
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
             {
+<<<<<<< HEAD
                 if (((Block.GetTopMostParent().EntityId() != SmallGatlingGun.GetTopMostParent().EntityId())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+=======
+                if (((Block.GetTopMostParent().entityid() != SmallGatlingGun.GetTopMostParent().entityid())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+>>>>>>> c04a03317a2fcba94cf23c648edab11be5289963
                 {
                     if (!m_greeted)
                     {
@@ -83,6 +96,7 @@ namespace WeaponsRangeCheck
             return m_objectBuilder;
         }
     }
+<<<<<<< HEAD
 
     public class Block
     {
@@ -91,4 +105,6 @@ namespace WeaponsRangeCheck
             throw new NotImplementedException();
         }
     }
+=======
+>>>>>>> c04a03317a2fcba94cf23c648edab11be5289963
 }
