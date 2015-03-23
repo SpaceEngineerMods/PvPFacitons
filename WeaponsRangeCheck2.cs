@@ -58,26 +58,26 @@ namespace WeaponsRangeCheck
             //find all of the ships
             Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(ships, (x) => x is Sandbox.ModAPI.IMyCubeGrid) ;
             int i =0;
-            var turrets = new List<IMyLargeMissileTurret>();
+            var gyros = new List< IMyGyro>();
             // go through ships
             foreach (var ship in ships)
             {
-                i++;
+                
                 var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
                 // find all missile turrets in the group
                 (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(templist,
-                    x => x is IMyLargeMissileTurret && x.FatBlock.IsWorking && !x.IsDestroyed);
+                    x => x is  IMyGyro && x.FatBlock.IsWorking && !x.IsDestroyed);
 
                 foreach (var temp in templist)
                 {
-                    turrets.Add(temp.FatBlock as IMyLargeMissileTurret);
+                    gyros.Add(temp.FatBlock as  IMyGyro);
                 }
             }
             
-            foreach (var Missile in turrets)
+            foreach (var gyro in gyros)
             {   
                 i++;
-                if (((Entity.GetTopMostParent().EntityId != Missile.GetTopMostParent().EntityId)) && (Missile.GetPosition() - Entity.GetPosition()).Length() < 20)
+                if (((Entity.GetTopMostParent().EntityId != gyro.GetTopMostParent().EntityId)) && (gyro.GetPosition() - Entity.GetPosition()).Length() < 20)
                 {
                     if (!m_greeted)
                     {
@@ -88,7 +88,7 @@ namespace WeaponsRangeCheck
                 else
                     m_greeted = false;
             }
-            MyAPIGateway.Utilities.ShowNotification(i + " Ships Detected In Map", 1000, MyFontEnum.Red);
+            MyAPIGateway.Utilities.ShowNotification(i + " gyros Detected In Map", 1000, MyFontEnum.Red);
         }
 
         public override void UpdateOnceBeforeFrame()
