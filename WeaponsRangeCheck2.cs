@@ -66,7 +66,7 @@ namespace WeaponsRangeCheck
                 var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
                 // find all missile turrets in the group
                 (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(templist,
-                    x => x is  IMyGyro && x.FatBlock.IsFunctional && !x.IsDestroyed);
+                    x => x is  IMyGyro);
 
                 foreach (var temp in templist)
                 {
