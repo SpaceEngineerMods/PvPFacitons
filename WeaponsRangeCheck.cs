@@ -55,7 +55,7 @@ namespace WeaponsRangeCheck
 
 
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun() && x.IsWorking);
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun && x.IsWorking);
 
 
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
