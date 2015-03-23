@@ -55,7 +55,7 @@ namespace WeaponsRangeCheck
 
             
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun);
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMyLargeMissileTurret);
             int i =0;
 
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
@@ -72,7 +72,7 @@ namespace WeaponsRangeCheck
                 else
                     m_greeted = false;
             }
-            MyAPIGateway.Utilities.ShowNotification(i + " Gatling Turrets Detected In Map", 1000, MyFontEnum.Red);
+            MyAPIGateway.Utilities.ShowNotification(i + " Missile Turrets Detected In Map", 1000, MyFontEnum.Red);
         }
 
         public override void UpdateOnceBeforeFrame()
