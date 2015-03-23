@@ -53,14 +53,14 @@ namespace WeaponsRangeCheck
         {
 
 
-            MyAPIGateway.Utilities.ShowNotification("Is Working", 1000, MyFontEnum.Red);
+            
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
             Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun);
-
+            int i =0;
 
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
-            {
-
+            {   
+                i++;
                 if (((Entity.GetTopMostParent().EntityId != SmallGatlingGun.GetTopMostParent().EntityId)) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
                 {
                     if (!m_greeted)
@@ -72,6 +72,7 @@ namespace WeaponsRangeCheck
                 else
                     m_greeted = false;
             }
+            MyAPIGateway.Utilities.ShowNotification(i + " Gatling Turrets Detected In Map", 1000, MyFontEnum.Red);
         }
 
         public override void UpdateOnceBeforeFrame()
