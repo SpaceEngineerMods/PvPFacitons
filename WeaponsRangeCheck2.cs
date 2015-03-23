@@ -73,7 +73,7 @@ namespace WeaponsRangeCheck
                 }
             }
             
-            foreach (var Missileturret in turrets)
+            foreach (var Missile in turrets)
             {   
                 i++;
                 if (((Entity.GetTopMostParent().EntityId != Missile.GetTopMostParent().EntityId)) && (Missile.GetPosition() - Entity.GetPosition()).Length() < 20)
