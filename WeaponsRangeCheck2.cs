@@ -62,6 +62,7 @@ namespace WeaponsRangeCheck
             // go through ships
             foreach (var ship in ships)
             {
+                i++;
                 var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
                 // find all missile turrets in the group
                 (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(templist,
@@ -87,7 +88,7 @@ namespace WeaponsRangeCheck
                 else
                     m_greeted = false;
             }
-            MyAPIGateway.Utilities.ShowNotification(i + " Missile Turrets Detected In Map", 1000, MyFontEnum.Red);
+            MyAPIGateway.Utilities.ShowNotification(i + " Ships Detected In Map", 1000, MyFontEnum.Red);
         }
 
         public override void UpdateOnceBeforeFrame()
