@@ -54,14 +54,29 @@ namespace WeaponsRangeCheck
 
 
             
-            HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMyLargeMissileTurret);
+          HashSet<IMyEntity> ships = new HashSet<IMyEntity>();
+            //find all of the ships
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(ships, (x) => x is Sandbox.ModAPI.IMyCubeGrid) ;
             int i =0;
+            var turrets = new List<IMyLargeMissileTurret>();
+            // go through ships
+            foreach (var ship in ships)
+            {
+                var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
+                // find all missile turrets in the group
+                (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(templist,
+                    x => x is IMyLargeMissileTurret && x.FatBlock.IsWorking && !x.IsDestroyed);
 
-            foreach (var SmallGatlingGun in workingSmallGatlingGuns)
+                foreach (var temp in templist)
+                {
+                    turrets.Add(temp.FatBlock as IMyLargeMissileTurret);
+                }
+            }
+            
+            foreach (var Missileturret in turrets)
             {   
                 i++;
-                if (((Entity.GetTopMostParent().EntityId != SmallGatlingGun.GetTopMostParent().EntityId)) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+                if (((Entity.GetTopMostParent().EntityId != Missile.GetTopMostParent().EntityId)) && (Missile.GetPosition() - Entity.GetPosition()).Length() < 20)
                 {
                     if (!m_greeted)
                     {
