@@ -53,7 +53,7 @@ namespace WeaponsRangeCheck
         {
 
 
-
+            MyAPIGateway.Utilities.ShowNotification("Is Working", 1000, MyFontEnum.Red);
             HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
             Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun);
 
