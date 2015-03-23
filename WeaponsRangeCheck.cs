@@ -6,7 +6,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleApplication2
+using Sandbox.ModAPI.Ingame;
+
+namespace WeaponsRangeCheck
 {
     [MyEntityComponentDescriptor(typeof(MyObjectBuilder_Beacon))]
     public class MyBeaconLogic : MyGameLogicComponent
@@ -52,23 +54,43 @@ namespace ConsoleApplication2
 
 
 
-            HashSet<IMyEntity> workingSmallGatlingGuns = new HashSet<IMyEntity>();
-            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(workingSmallGatlingGuns, (x) => x is IMySmallGatlingGun() && x.IsWorking);
-
-
-            foreach (var SmallGatlingGun in workingSmallGatlingGuns)
+            HashSet<IMyEntity> ships = new HashSet<IMyEntity>();
+            //find all of the ships
+            Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(ships, (x) => x is Sandbox.ModAPI.IMyCubeGrid);
+            int i = 0;
+            var GatlingGuns = new List<IMySmallGatlingGun>();
+            // go through ships
+            foreach (var ship in ships)
             {
-                if (((Block.GetTopMostParent().entityid() != SmallGatlingGun.GetTopMostParent().entityid())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+
+                var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
+                // find all gatling guns in the group
+                (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(templist,
+                    x => x.FatBlock is IMySmallGatlingGun);
+
+                foreach (var temp in templist)
+                {
+
+                    GatlingGuns.Add(temp.FatBlock as IMySmallGatlingGun);
+                }
+            }
+
+            foreach (var GatlingGun in GatlingGuns)
+            {
+                i++;
+                if (((Entity.GetTopMostParent().EntityId != GatlingGun.GetTopMostParent().EntityId)) && (GatlingGun.Enabled) && (GatlingGun.GetPosition() - Entity.GetPosition()).Length() < 20)
                 {
                     if (!m_greeted)
-                    {
-                        MyAPIGateway.Utilities.ShowNotification(string.Format("Hello I am {0}", (Entity as Sandbox.ModAPI.Ingame.IMyTerminalBlock).DisplayNameText), 1000, MyFontEnum.Red);
+                    { 
+                        MyAPIGateway.Utilities.ShowNotification(i + " GatlingGuns Detected In Map", 1000, MyFontEnum.BuildInfoHighlight);
                         m_greeted = true;
+
                     }
                 }
                 else
                     m_greeted = false;
             }
+        
         }
 
         public override void UpdateOnceBeforeFrame()
