@@ -61,7 +61,7 @@ namespace WeaponsRangeCheck
             foreach (var SmallGatlingGun in workingSmallGatlingGuns)
             {
 
-                if (((Block.GetTopMostParent().EntityId() != SmallGatlingGun.GetTopMostParent().EntityId())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
+                if (((Entity.GetTopMostParent().EntityId() != SmallGatlingGun.GetTopMostParent().EntityId())) && (MyAPIGateway.Session.Player.GetPosition() - Entity.GetPosition()).Length() < 20)
 
                 {
                     if (!m_greeted)
