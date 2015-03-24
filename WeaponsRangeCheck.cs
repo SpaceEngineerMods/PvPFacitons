@@ -5,6 +5,8 @@ using Sandbox.Common.Components;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 using Sandbox.ModAPI.Ingame;
 
@@ -74,15 +76,22 @@ namespace WeaponsRangeCheck
                     GatlingGuns.Add(temp.FatBlock as IMySmallGatlingGun);
                 }
             }
-
+    
+    
             foreach (var GatlingGun in GatlingGuns)
             {
-                i++;
-                if (((Entity.GetTopMostParent().EntityId != GatlingGun.GetTopMostParent().EntityId)) && (GatlingGun.Enabled) && (GatlingGun.GetPosition() - Entity.GetPosition()).Length() < 20)
+
+
+
+
+                if (((Entity.GetTopMostParent().EntityId != GatlingGun.GetTopMostParent().EntityId)) && (GatlingGun.Enabled) && (GatlingGun.OwnerId != (Entity as Sandbox.ModAPI.IMyTerminalBlock).OwnerId) && (VRageMath.ContainmentType.Contains == GatlingGun.GetTopMostParent().WorldAABB.Contains(MyAPIGateway.Session.Player.GetPosition())) && (GatlingGun.GetPosition() - Entity.GetPosition()).Length() < 20)
                 {
+
                     if (!m_greeted)
-                    { 
+                    {
+                        i++;
                         MyAPIGateway.Utilities.ShowNotification(i + " GatlingGuns Detected In Map", 1000, MyFontEnum.BuildInfoHighlight);
+                        MyAPIGateway.Session.Factions.DeclareWar(factionBuilder.FactionId, selectedPlayer.PlayerId);
                         m_greeted = true;
 
                     }
