@@ -54,8 +54,6 @@ namespace WeaponsRangeCheck
         public override void UpdateBeforeSimulation100()
         {
 
-
-
             HashSet<IMyEntity> ships = new HashSet<IMyEntity>();
             //find all of the ships
             Sandbox.ModAPI.MyAPIGateway.Entities.GetEntities(ships, (x) => x is Sandbox.ModAPI.IMyCubeGrid);
@@ -64,7 +62,7 @@ namespace WeaponsRangeCheck
             // go through ships
             foreach (var ship in ships)
             {
-              
+
 
                 var templist = new List<Sandbox.ModAPI.IMySlimBlock>();
                 // find all gatling guns in the group
@@ -87,25 +85,34 @@ namespace WeaponsRangeCheck
                 var tempattackfactionid = MyAPIGateway.Session.Factions.TryGetPlayerFaction(tempattackplayerid);
                 var tempdefendfactionid = MyAPIGateway.Session.Factions.TryGetPlayerFaction(tempdefendplayerid);
 
-                if (
-                    Entity.GetTopMostParent().EntityId != GatlingGun.GetTopMostParent().EntityId &&
-                   GatlingGun.Enabled &&
-                    GatlingGun.OwnerId != (Entity as Sandbox.ModAPI.IMyTerminalBlock).OwnerId &&
-                    VRageMath.ContainmentType.Contains == GatlingGun.GetTopMostParent().WorldAABB.Contains(
-                        MyAPIGateway.Session.Player.GetPosition()
-                        ) &&
-                    (GatlingGun.GetPosition() - Entity.GetPosition()).Length() < 20
-                    )
+
+                try
                 {
-                    MyAPIGateway.Session.Factions.DeclareWar(tempdefendfactionid.FactionId, tempattackfactionid.FactionId);
-                    MyAPIGateway.Utilities.ShowNotification("Contraband Detected", 1000, MyFontEnum.BuildInfoHighlight);
+                    if (Entity.GetTopMostParent().EntityId != GatlingGun.GetTopMostParent().EntityId &&
+                       (GatlingGun.Enabled) &&
+                        GatlingGun.OwnerId != (Entity as Sandbox.ModAPI.IMyTerminalBlock).OwnerId &&
+                        VRageMath.ContainmentType.Contains == GatlingGun.GetTopMostParent().WorldAABB.Contains(MyAPIGateway.Session.Player.GetPosition()) &&
+                        (GatlingGun.GetPosition() - Entity.GetPosition()).Length() < 1000)
+                    {
+
+                        MyAPIGateway.Session.Factions.DeclareWar(tempdefendfactionid.FactionId, tempattackfactionid.FactionId);
+                        MyAPIGateway.Utilities.ShowNotification("You have failed to unpower your weapons", 1000, MyFontEnum.BuildInfoHighlight);
+                    }
+                   else if((GatlingGun.GetPosition() - Entity.GetPosition()).Length() > 1000)
+                        {
+                          MyAPIGateway.Session.Factions.AcceptPeace(tempdefendfactionid.FactionId, tempattackfactionid.FactionId);
+                             MyAPIGateway.Utilities.ShowNotification("You have left our space", 1000, MyFontEnum.BuildInfoHighlight);
+                        }
+
+                }
+                catch
+                {
+                    return;
                 }
 
-
-
             }
-        }
 
+        }
 
         public override void UpdateOnceBeforeFrame()
         {
@@ -115,5 +122,6 @@ namespace WeaponsRangeCheck
         {
             return m_objectBuilder;
         }
+    
     }
 }
