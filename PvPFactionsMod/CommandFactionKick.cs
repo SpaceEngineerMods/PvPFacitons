@@ -10,7 +10,6 @@
     public class CommandFactionKick : ChatCommand
     {
         public CommandFactionKick()
-            : base(ChatCommandSecurity.Admin, "fk", new[] { "/fk" })
         {
         }
 

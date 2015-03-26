@@ -1,2 +1,0 @@
-C:\Users\zacka_000\OneDrive\Documents\C# Studies\PvPFactions2\PvPFactions2\bin\Debug\PvPFactions2.exe.config
-E:\PvPFactions\PvPFactions2\bin\Debug\PvPFactions2.exe.config

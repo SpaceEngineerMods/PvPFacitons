@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PvPFactions")]
+[assembly: AssemblyTitle("PvPFactionsMod")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("PvPFactions")]
+[assembly: AssemblyProduct("PvPFactionsMod")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("af5d5a07-de59-4d80-a80b-b9b1c95c669e")]
+[assembly: Guid("2cab1149-b105-4574-adc7-79b30b0301ce")]
 
 // Version information for an assembly consists of the following four values:
 //
