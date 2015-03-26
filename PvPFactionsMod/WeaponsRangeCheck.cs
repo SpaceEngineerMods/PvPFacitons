@@ -8,6 +8,7 @@ using System.Text;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Sandbox.ModAPI.Ingame;
+using IMySlimBlock = Sandbox.ModAPI.IMySlimBlock;
 
 namespace WeaponsRangeCheck
 {
@@ -57,14 +58,36 @@ namespace WeaponsRangeCheck
             HashSet<IMyEntity> infractingships = new HashSet<IMyEntity>();
             var station = Entity.GetTopMostParent();
             //find all of the ships
-            var gatlingGuns = new HashSet<IMyEntity>();
-            MyAPIGateway.Entities.GetEntities(gatlingGuns, (x) => x is IMySmallGatlingGun && (x.GetTopMostParent().GetPosition() - station.GetPosition()).Length() < 1000);
-
+            var ships = new HashSet<IMyEntity>();
+            MyAPIGateway.Entities.GetEntities(ships, (x) => x is Sandbox.ModAPI.IMyCubeGrid  && (x.GetPosition() - station.GetPosition()).Length() < 1000);
             
-            // go through ships
-         
+            var gatlingGuns = new List<IMySmallGatlingGun>();
+    
 
-            foreach (var gatlingGun in gatlingGuns.Select(gatling => gatling as IMySmallGatlingGun))
+            foreach (var ship in ships)
+            {
+                try
+                {
+
+
+                    var tempblocklist = new List<IMySlimBlock>();
+                    (ship as Sandbox.ModAPI.IMyCubeGrid).GetBlocks(tempblocklist,
+                        turret => turret.FatBlock is IMySmallGatlingGun);
+
+                    gatlingGuns.AddRange(tempblocklist.Select(block => block.FatBlock as IMySmallGatlingGun));
+                }
+                catch
+                {
+                    
+                }
+            }
+
+
+
+            // go through ships
+
+            //MyAPIGateway.Utilities.ShowNotification("Is Working " + gatlingGuns.Count + " " + ships.Count);
+            foreach (var gatlingGun in gatlingGuns)
             {
                 try
                 {
@@ -81,7 +104,7 @@ namespace WeaponsRangeCheck
                 }
                 catch
                 {
-                    return;
+                    MyAPIGateway.Utilities.ShowNotification("We have detected you have no ownership data, you shall soon be detained.", 1000, MyFontEnum.BuildInfoHighlight);
                 }
             }
 
@@ -89,16 +112,15 @@ namespace WeaponsRangeCheck
             {
                 try
                 {
-                    var tempattackplayerid = (ship as Sandbox.ModAPI.IMyCubeGrid).BigOwners[0];
+                    var tempattackplayerid = (ship as Sandbox.ModAPI.IMyCubeGrid).BigOwners;
                     var tempdefendplayerid = (Entity as Sandbox.ModAPI.IMyTerminalBlock).OwnerId;
-                    var tempattackfactionid = MyAPIGateway.Session.Factions.TryGetPlayerFaction(tempattackplayerid);
+                    var tempattackfactionid = tempattackplayerid.Select(attackingplayer => MyAPIGateway.Session.Factions.TryGetPlayerFaction(attackingplayer)).ToList();
                     var tempdefendfactionid = MyAPIGateway.Session.Factions.TryGetPlayerFaction(tempdefendplayerid);
 
                     if (VRageMath.ContainmentType.Contains ==
                         ship.WorldAABB.Contains(MyAPIGateway.Session.Player.GetPosition()))
                     {
-                        MyAPIGateway.Session.Factions.DeclareWar(tempdefendfactionid.FactionId,
-                            tempattackfactionid.FactionId);
+                        tempattackfactionid.ForEach(attackfaction => MyAPIGateway.Session.Factions.DeclareWar(tempdefendfactionid.FactionId,attackfaction.FactionId));
                         MyAPIGateway.Utilities.ShowNotification("You have failed to unpower your weapons", 1000,
                             MyFontEnum.BuildInfoHighlight);
                     }
